@@ -17,7 +17,7 @@ def init():
     model_id = "openai/clip-vit-base-patch32"
 
     model = CLIPModel.from_pretrained(model_id).to(device)
-    processor = CLIPProcessor.from_pretrained(model_id).to(device)
+    processor = CLIPProcessor.from_pretrained(model_id)
     tokenizer = CLIPTokenizerFast.from_pretrained(model_id)
     
     context = {
