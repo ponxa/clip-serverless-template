@@ -62,7 +62,7 @@ def handler(context: dict, request: Request) -> Response:
                   images=pil_image,
                   return_tensors='pt',
                   padding=True
-                 )['pixel_values']
+                 )['pixel_values'].to("cuda")
     out = model.get_image_features(pixel_values=image)
     out = out.squeeze(0)
     emb = out.cpu().detach().numpy()
