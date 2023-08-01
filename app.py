@@ -51,11 +51,12 @@ def handler(context: dict, request: Request) -> Response:
 def handler(context: dict, request: Request) -> Response:
     
     image_url = request.json.get("imageURL")
+    print('image_url',image_url)
     if image_url != None:
         pil_image = Image.open(requests.get(image_url, stream=True).raw)
     else:
         assert False, "No image provided"
-    
+    print('pil_image',pil_image)
     model = context.get("model")
     processor = context.get("processor")
     image = processor(text=None,
@@ -64,9 +65,12 @@ def handler(context: dict, request: Request) -> Response:
                   padding=True
                  )['pixel_values'].to("cuda")
     out = model.get_image_features(pixel_values=image)
+  
     out = out.squeeze(0)
+    print('output',out.shape)
     emb = out.cpu().detach().numpy()
     emb = emb/np.linalg.norm(emb)
+    print('emb',emb)
 
     return Response(
         json = {"outputs": emb}, 
