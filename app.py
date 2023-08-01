@@ -37,7 +37,7 @@ def handler(context: dict, request: Request) -> Response:
     prompt = request.json.get("prompt")
     model = context.get("model")
     tokenizer = context.get("tokenizer")
-    inputs = tokenizer(prompt, return_tensors="pt")
+    inputs = tokenizer(prompt, return_tensors="pt").to("cuda")
     out = model.get_text_features(**inputs)
     out = out.squeeze(0)
     emb = out.cpu().detach().numpy().tolist()
